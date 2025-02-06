@@ -6,6 +6,7 @@ namespace GameScreen.GameLogic
     [RequireComponent(typeof(Rigidbody2D))]
     public class Ball : MonoBehaviour
     {
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private float _startXPosition = 0f;
         [SerializeField] private float _startYPosition = 10f;
         [SerializeField] private float _maxXBounds = 5f;
@@ -42,8 +43,8 @@ namespace GameScreen.GameLogic
         private PhysicsMaterial2D CreateBouncyMaterial()
         {
             PhysicsMaterial2D material = new PhysicsMaterial2D("PlinkoMaterial");
-            material.friction = 0.4f;
-            material.bounciness = 0.5f;
+            material.friction = 0.1f;
+            material.bounciness = 0.7f;
             return material;
         }
 
@@ -78,6 +79,14 @@ namespace GameScreen.GameLogic
                 _rb.bodyType = RigidbodyType2D.Dynamic;
                 float randomX = UnityEngine.Random.Range(-0.5f, 0.5f);
                 _rb.AddForce(new Vector2(randomX, 0), ForceMode2D.Impulse);
+            }
+        }
+        
+        public void UpdateSprite(Sprite newSprite)
+        {
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.sprite = newSprite;
             }
         }
 

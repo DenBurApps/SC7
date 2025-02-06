@@ -16,7 +16,7 @@ namespace GameScreen.GameLogic
 
         private float _maxCoefficient;
 
-        public event Action<CoefficientHolder> Interacted;
+        public event Action<CoefficientHolder, Ball> Interacted;
 
         public float CurrentCoefficient { get; private set; }
 
@@ -31,12 +31,12 @@ namespace GameScreen.GameLogic
             float normalizedValue = CurrentCoefficient / _maxCoefficient;
 
             Color targetColor;
-            if (normalizedValue <= 0.25f)
-                targetColor = Color.Lerp(_greenColor, _yellow1Color, normalizedValue * 4);
-            else if (normalizedValue <= 0.5f)
-                targetColor = Color.Lerp(_yellow1Color, _yellow2Color, (normalizedValue - 0.25f) * 4);
-            else if (normalizedValue <= 0.75f)
-                targetColor = Color.Lerp(_yellow2Color, _redColor, (normalizedValue - 0.5f) * 4);
+            if (normalizedValue <= 0.03f)
+                targetColor = Color.Lerp(_greenColor, _yellow1Color, normalizedValue * 4f);
+            else if (normalizedValue <= 0.04f)
+                targetColor = Color.Lerp(_yellow1Color, _yellow2Color, (normalizedValue - 0.25f) * 10f);
+            else if (normalizedValue <= 0.10f)
+                targetColor = Color.Lerp(_yellow2Color, _redColor, (normalizedValue - 0.35f) * 6.67f);
             else
                 targetColor = _redColor;
 
@@ -46,7 +46,7 @@ namespace GameScreen.GameLogic
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out Ball ball))
-                Interacted?.Invoke(this);
+                Interacted?.Invoke(this, ball);
         }
     }
 }

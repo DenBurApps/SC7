@@ -1,12 +1,14 @@
+using GameScreen.GameLogic;
 using UnityEngine;
 
 public class PlinkoInitializer : MonoBehaviour
 {
-    [SerializeField] private GameObject plinkoColliderPrefab;
-    [SerializeField] private int lineCount = 8;
-    [SerializeField] private float horizontalSpacing = 1f;
-    [SerializeField] private float verticalSpacing = 1f;
-    [SerializeField] private Vector2 startPosition = new Vector2(0f, 0f);
+    [SerializeField] private PlinkoCollider _plinkoColliderPrefab;
+    [SerializeField] private int _lineCount = 8;
+    [SerializeField] private float _horizontalSpacing = 1f;
+    [SerializeField] private float _verticalSpacing = 1f;
+    [SerializeField] private Vector2 _startPosition = new Vector2(0f, 0f);
+    [SerializeField] private AudioSource _hitSound;
 
     private void Start()
     {
@@ -15,28 +17,28 @@ public class PlinkoInitializer : MonoBehaviour
 
     private void InitializePlinkoBoard()
     {
-        for (int line = 0; line < lineCount; line++)
+        for (int line = 0; line < _lineCount; line++)
         {
-            // Start with 3 pegs and increase by 1 each line
             int pegsInCurrentLine = 3 + line;
-            float lineWidth = (pegsInCurrentLine - 1) * horizontalSpacing;
-            float startX = startPosition.x - (lineWidth / 2f);
-            float currentY = startPosition.y - (line * verticalSpacing);
+            float lineWidth = (pegsInCurrentLine - 1) * _horizontalSpacing;
+            float startX = _startPosition.x - (lineWidth / 2f);
+            float currentY = _startPosition.y - (line * _verticalSpacing);
 
             for (int peg = 0; peg < pegsInCurrentLine; peg++)
             {
                 Vector2 pegPosition = new Vector2(
-                    startX + (peg * horizontalSpacing),
+                    startX + (peg * _horizontalSpacing),
                     currentY
                 );
 
-                GameObject newPeg = Instantiate(
-                    plinkoColliderPrefab,
+                PlinkoCollider newPeg = Instantiate(
+                    _plinkoColliderPrefab,
                     pegPosition,
                     Quaternion.identity,
                     transform
                 );
 
+                newPeg.AssignHitSound(_hitSound);
                 newPeg.name = $"Plinko_Line{line}_Peg{peg}";
             }
         }
@@ -46,21 +48,21 @@ public class PlinkoInitializer : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         
-        for (int line = 0; line < lineCount; line++)
+        for (int line = 0; line < _lineCount; line++)
         {
             int pegsInCurrentLine = 3 + line;
-            float lineWidth = (pegsInCurrentLine - 1) * horizontalSpacing;
-            float startX = startPosition.x - (lineWidth / 2f);
-            float currentY = startPosition.y - (line * verticalSpacing);
+            float lineWidth = (pegsInCurrentLine - 1) * _horizontalSpacing;
+            float startX = _startPosition.x - (lineWidth / 2f);
+            float currentY = _startPosition.y - (line * _verticalSpacing);
 
             for (int peg = 0; peg < pegsInCurrentLine; peg++)
             {
                 Vector2 pegPosition = new Vector2(
-                    startX + (peg * horizontalSpacing),
+                    startX + (peg * _horizontalSpacing),
                     currentY
                 );
                 
-                Gizmos.DrawWireSphere(pegPosition, 0.1f);
+                Gizmos.DrawWireSphere(pegPosition, 0.07f);
             }
         }
     }

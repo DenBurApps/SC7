@@ -20,7 +20,12 @@ namespace GameScreen
         [SerializeField] private Button _easyButton, _normalButton, _hardButton;
         [SerializeField] private Image _easyImage, _normalImage, _hardImage;
 
+        private bool _isInteractable = true;
+        private RiskType _currentRiskType;
+
         public event Action<RiskType> RiskSelected;
+
+        public RiskType CurrentRiskType => _currentRiskType;
 
         private void OnEnable()
         {
@@ -37,10 +42,27 @@ namespace GameScreen
             _hardButton.onClick.RemoveAllListeners();
         }
 
-        private void OnRiskButtonClicked(RiskType riskType)
+        public void SetInteractable(bool interactable)
+        {
+            _isInteractable = interactable;
+            _easyButton.interactable = interactable;
+            _normalButton.interactable = interactable;
+            _hardButton.interactable = interactable;
+
+            if (!interactable)
+            {
+                ResetAllButtonsToDefault();
+            }
+            else
+            {
+                ApplyRiskTypeState(_currentRiskType);
+            }
+        }
+
+        private void ApplyRiskTypeState(RiskType riskType)
         {
             ResetAllButtonsToDefault();
-            
+
             switch (riskType)
             {
                 case RiskType.Easy:
@@ -53,7 +75,14 @@ namespace GameScreen
                     UpdateButtonState(_hardImage, _hardText, _hardSelectedSprite, _hardTextColor);
                     break;
             }
-            
+        }
+
+        private void OnRiskButtonClicked(RiskType riskType)
+        {
+            if (!_isInteractable) return;
+
+            _currentRiskType = riskType;
+            ApplyRiskTypeState(riskType);
             RiskSelected?.Invoke(riskType);
         }
 
@@ -68,7 +97,7 @@ namespace GameScreen
             _easyImage.sprite = _defaultSprite;
             _normalImage.sprite = _defaultSprite;
             _hardImage.sprite = _defaultSprite;
-            
+
             _easyText.color = _defaultColor;
             _normalText.color = _defaultColor;
             _hardText.color = _defaultColor;

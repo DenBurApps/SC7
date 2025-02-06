@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameScreen
 {
-    public class LinesButton : MonoBehaviour
+    public class LineButton : MonoBehaviour
     {
         [SerializeField] private Color _defaultButtonColor;
         [SerializeField] private Color _selectedButtonColor;
@@ -16,7 +16,7 @@ namespace GameScreen
 
         private readonly int _availableLevel = 12;
         
-        public event Action<LinesButton> LineButtonClicked;
+        public event Action<LineButton> LineButtonClicked;
 
         [field: SerializeField] public int Level { get; private set; }
         [field: SerializeField] public int UnlockPrice { get; private set; }
@@ -39,6 +39,11 @@ namespace GameScreen
             InitializeButton();
         }
         
+        public void SetInteractable(bool interactable)
+        {
+            _button.interactable = interactable;
+        }
+        
         private void InitializeButton()
         {
             _numberText.text = Level.ToString();
@@ -46,7 +51,6 @@ namespace GameScreen
             IsLocked = Level > _availableLevel && PlayerPrefs.GetInt(SaveKey) != 1;
             
             UpdateButtonState();
-            SetDefaultColor();
         }
         
         private void UpdateButtonState()

@@ -88,4 +88,9 @@ public static class PlayerBalanceController
             Balance = balance;
         }
     }
+
+    public static bool HasEnoughBalance(int betAmount)
+    {
+        return betAmount <= CurrentBalance;
+    }
 }

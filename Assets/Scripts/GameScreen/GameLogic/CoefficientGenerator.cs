@@ -24,11 +24,9 @@ public static class CoefficientGenerator
         int multiplierCount = lines + 1;
         double[] baseMultipliers = BaseMultipliers[risk];
         List<double> multipliers = new List<double>(new double[multiplierCount]);
-
        
         double[] scaledBaseMultipliers = ScaleMultipliers(baseMultipliers, lines);
-
-        // Определяем центр
+        
         bool isOdd = lines % 2 != 0;
         double centerPoint = (multiplierCount - 1) / 2.0;
 

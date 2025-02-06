@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,9 +23,6 @@ namespace GameScreen
             _minusButton.onClick.AddListener(DecreaseBet);
             _minButton.onClick.AddListener(SetMinBet);
             _maxButton.onClick.AddListener(SetMaxBet);
-
-            CurrentBet = StartBet;
-            UpdateBetText();
         }
 
         private void OnDisable()
@@ -33,6 +31,13 @@ namespace GameScreen
             _minusButton.onClick.RemoveAllListeners();
             _minButton.onClick.RemoveAllListeners();
             _maxButton.onClick.RemoveAllListeners();
+        }
+
+        private void Start()
+        {
+            CurrentBet = StartBet;
+            UpdateBetText();
+            UpdateButtonStates();
         }
 
         private void IncreaseBet()
